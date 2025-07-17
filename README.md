@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://i.imgur.com/dM7Thhn.png" width="200" alt="Logo del Proyecto">
+</p>
+
 # 🎉 Gestor de Vacaciones y Cumpleaños 📆
 
 > Automatiza recordatorios de vacaciones y cumpleaños vía Webhook de Discord. Perfecto para equipos que quieren mantener el buen ambiente sin olvidar fechas importantes.
@@ -48,3 +52,14 @@ cd gestor-fechas
 
 # Instala dependencias
 npm install
+```
+
+⏰ Tareas Automáticas
+Configuradas con node-cron. Se ejecutan automáticamente según la hora del servidor (zona horaria: América/México_City).
+
+🎈 cumpleaños.js → Todos los días a las 9:00 AM.
+
+🏖 vacaciones.js → Todos los días a las 6:00 PM.
+
+Si usas PM2 o algún manejador de procesos, puedes correr el script base que importe y dispare los jobs.
+
