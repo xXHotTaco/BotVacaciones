@@ -1,10 +1,12 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cron from 'node-cron';
+
 dotenv.config();
 
 import { registrarSolicitudVacaciones, notificarDiscord } from './controllers/vacacionesController.js';
-import { enviarRecordatorios } from './controllers/recordatorioController.js';
+import { enviarRecordatorios, notificarCumpleañosHoy } from './controllers/recordatorioController.js';
+import { registrarCumple } from './controllers/cumpleController.js';
 
 const app = express();
 app.use(express.json());
@@ -23,16 +25,27 @@ app.post('/vacaciones', async (req, res) => {
   }
 });
 
+app.post('/birthday', async (req, res) => {
+  const { nombre, fechaNacimiento } = req.body;
+  const resultado = await registrarCumple({ nombre, fechaNacimiento });
 
-//Falle no se como se usa esta madre
-// Ejecutar todos los días a las 9:00 am
-// cron.schedule('9 23 * * *', async () => {
-//   console.log('🔔 Ejecutando job de recordatorios');
-//   try {
-//     await enviarRecordatorios();
-//   } catch (error) {
-//     console.error('❌ Error en recordatorios:', error);
-//   }
-// });
+  if (resultado.success) {
+    res.json({ success: true, message: 'Cumpleaños registrado 🎉' });
+  } else {
+    res.status(500).json({ success: false, error: resultado.error });
+  }
+});
 
-app.listen(3000, () => console.log('🟢 Servidor corriendo en http://localhost:3000'));
+
+
+cron.schedule('45 23 * * *', async () => {
+  console.log('🔔 Ejecutando job de recordatorios');
+  try {
+    await enviarRecordatorios();
+    await notificarCumpleañosHoy()
+  } catch (error) {
+    console.error('❌ Error en recordatorios:', error);
+  }
+});
+
+app.listen(3000, () => console.log('🟢 Servidor corriendo'));
