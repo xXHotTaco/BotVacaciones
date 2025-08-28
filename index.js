@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cron from 'node-cron';
 
 dotenv.config();
+//una prueba 1
 
 import { registrarSolicitudVacaciones, notificarDiscord } from './controllers/vacacionesController.js';
 import { enviarRecordatorios, notificarCumpleañosHoy } from './controllers/recordatorioController.js';
